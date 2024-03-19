@@ -1,52 +1,60 @@
-import { Inject, Injectable, PLATFORM_ID, Optional, isDevMode, Renderer2, RendererFactory2, ViewEncapsulation } from '@angular/core'
-import { filter } from 'rxjs/operators'
-import { Router, NavigationEnd } from '@angular/router'
-import { DOCUMENT, isPlatformBrowser } from '@angular/common'
+import {
+  Inject,
+  Injectable,
+  PLATFORM_ID,
+  Optional,
+  isDevMode,
+  Renderer2,
+  RendererFactory2,
+  ViewEncapsulation,
+} from "@angular/core";
+import { filter } from "rxjs/operators";
+import { Router, NavigationEnd } from "@angular/router";
+import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 
-import { IntercomConfigObject } from '../shared/intercom-config-object.service'
-import { IntercomBootInput } from '../types/intercom-boot-input'
+import { IntercomConfigObject } from "../shared/intercom-config-object.service";
+import { IntercomBootInput } from "../types/intercom-boot-input";
 
 /**
  * A provider with every Intercom.JS method
  */
 @Injectable()
 export class Intercom {
+  private id: string;
 
-  private id: string
-
-  private renderer2: Renderer2
+  private renderer2: Renderer2;
 
   constructor(
     @Inject(IntercomConfigObject) private config: IntercomConfigObject,
     @Inject(PLATFORM_ID) protected platformId: Object,
     @Optional() @Inject(Router) private router: Router,
     private rendererFactory: RendererFactory2,
-    @Optional() @Inject(DOCUMENT) private document: any // Document
-
+    @Optional() @Inject(DOCUMENT) private document: any, // Document
   ) {
     if (!isPlatformBrowser(this.platformId)) {
-      return
+      return;
     }
 
     this.renderer2 = this.rendererFactory.createRenderer(this.document, {
-      id: '-1',
+      id: "-1",
       encapsulation: ViewEncapsulation.None,
       styles: [],
-      data: {}
-    })
+      data: {},
+    });
 
     // Subscribe to router changes
     if (config && config.updateOnRouterChange) {
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
-        this.update()
-      })
-    }
-    else if (isDevMode()) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe((event) => {
+          this.update();
+        });
+    } else if (isDevMode()) {
       console.warn(`
       Common practice in single page applications is to update whenever the route changes.
       ng-intercom supports this functionality out of the box just set 'updateOnRouterChange' to true in your Intercom Module config.
        This warning will not appear in production, if you choose not to use router updating.
-     `)
+     `);
     }
   }
 
@@ -57,22 +65,26 @@ export class Intercom {
    */
   public boot(intercomData?: IntercomBootInput): void {
     if (!isPlatformBrowser(this.platformId)) {
-      return
+      return;
     }
-    const app_id = intercomData.app_id ? intercomData.app_id : this.config.appId
+    const app_id = intercomData.app_id
+      ? intercomData.app_id
+      : this.config.appId;
     if (!app_id) {
-      throw new Error('Please provide Intercom app_id either in module config or in the `boot()` method');
+      throw new Error(
+        "Please provide Intercom app_id either in module config or in the `boot()` method",
+      );
     }
     // Run load and attach to window
     this.loadIntercom(this.config, (event?: Event) => {
       // then boot the intercom js
       const data = {
         ...intercomData,
-        app_id
-      }
+        app_id,
+      };
 
-      return this._callIntercom('boot', data)
-    })
+      return this._callIntercom("boot", data);
+    });
   }
 
   /**
@@ -83,7 +95,7 @@ export class Intercom {
    * This method will effectively clear out any user data that you have been passing through the JS API.
    */
   public shutdown(): void {
-    return this._callIntercom('shutdown')
+    return this._callIntercom("shutdown");
   }
 
   /**
@@ -95,15 +107,22 @@ export class Intercom {
    * in addition to logging an impression at the current URL and looking for new messages for the user.
    */
   public update(data?: any): void {
-    return this._callIntercom('update', data)
-
+    return this._callIntercom("update", data);
   }
 
   /**
    * This will hide the main Messenger panel if it is open. It will not hide the Messenger Launcher.
    */
   public hide(): void {
-    return this._callIntercom('hide')
+    return this._callIntercom("hide");
+  }
+
+  /**
+   *  The article will be shown within the Messenger, and clicking the Messenger back button will return to the previous context.
+   * If the Messenger is closed when the method is called, it will be opened first and then the article will be shown.
+   */
+  public showArticle(articleId: number): void {
+    return this._callIntercom("showArticle", articleId);
   }
 
   /**
@@ -115,17 +134,16 @@ export class Intercom {
    */
   public show(message?: string): void {
     if (message) {
-      return this.showNewMessage(message)
+      return this.showNewMessage(message);
     }
-    return this._callIntercom('show')
-
+    return this._callIntercom("show");
   }
 
   /**
    * To open the message window with the message list you can call `showMessages()`.
    */
   public showMessages(): void {
-    return this._callIntercom('showMessages')
+    return this._callIntercom("showMessages");
   }
 
   /**
@@ -134,8 +152,7 @@ export class Intercom {
    * This function takes an optional parameter that can be used to pre-populate the message composer as shown below.
    */
   public showNewMessage(message?: string): void {
-    return this._callIntercom('showNewMessage', message)
-
+    return this._callIntercom("showNewMessage", message);
   }
 
   /**
@@ -146,9 +163,8 @@ export class Intercom {
    * You can also add custom information to events in the form of event metadata.
    */
   public trackEvent(eventName: string, metadata?: any): void {
-    return this._callIntercom('trackEvent', eventName, metadata)
+    return this._callIntercom("trackEvent", eventName, metadata);
   }
-
 
   /**
    * A visitor is someone who goes to your site but does not use the messenger.
@@ -156,7 +172,7 @@ export class Intercom {
    * This user_id can be used to retrieve the visitor or lead through the REST API.
    */
   public getVisitorId(): string {
-    return this._callIntercom('getVisitorId')
+    return this._callIntercom("getVisitorId");
   }
 
   /**
@@ -165,28 +181,28 @@ export class Intercom {
    * @readonly
    */
   get visitorId(): string {
-    return this._callIntercom('getVisitorId')
+    return this._callIntercom("getVisitorId");
   }
 
   /**
    * Gives you the ability to hook into the show event. Requires a function argument.
    */
   public onShow(handler: () => void): void {
-    return this._callIntercom('onShow', handler)
+    return this._callIntercom("onShow", handler);
   }
 
   /**
    * Gives you the ability to hook into the hide event. Requires a function argument.
    */
   public onHide(handler: () => void): void {
-    return this._callIntercom('onHide', handler)
+    return this._callIntercom("onHide", handler);
   }
 
   /**
    * This method allows you to register a function that will be called when the current number of unread messages changes.
    */
   public onUnreadCountChange(handler: (unreadCount?: number) => void): void {
-    return this._callIntercom('onUnreadCountChange', handler)
+    return this._callIntercom("onUnreadCountChange", handler);
   }
 
   /**
@@ -198,7 +214,7 @@ export class Intercom {
    * turned on. If you're calling this API using an invalid tour id, nothing will happen.
    */
   public startTour(tourId: number): void {
-    return this._callIntercom('startTour', tourId)
+    return this._callIntercom("startTour", tourId);
   }
 
   /**
@@ -206,69 +222,73 @@ export class Intercom {
    */
   private _callIntercom(fn: string, ...args) {
     if (!isPlatformBrowser(this.platformId)) {
-      return
+      return;
     }
     if ((<any>window).Intercom) {
-      return (<any>window).Intercom(fn, ...args)
+      return (<any>window).Intercom(fn, ...args);
     }
-    return
+    return;
   }
 
-  injectIntercomScript(conf: IntercomConfigObject, afterInjectCallback: (ev: Event) => any): void {
-
+  injectIntercomScript(
+    conf: IntercomConfigObject,
+    afterInjectCallback: (ev: Event) => any,
+  ): void {
     if (!isPlatformBrowser(this.platformId)) {
-      return
+      return;
     }
 
     // Set the window configuration to conf
-    (<any>window).intercomSettings = conf
+    (<any>window).intercomSettings = conf;
 
     // Create the intercom script in document
-    const s = this.document.createElement('script')
-    s.type = 'text/javascript'
-    s.async = true
-    s.src = `https://widget.intercom.io/widget/${this.id}`
+    const s = this.document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = `https://widget.intercom.io/widget/${this.id}`;
 
     if ((s as any).attachEvent) {
-      (s as any).attachEvent('onload', afterInjectCallback)
+      (s as any).attachEvent("onload", afterInjectCallback);
     } else {
-      s.addEventListener('load', afterInjectCallback, false)
+      s.addEventListener("load", afterInjectCallback, false);
     }
 
     if (this.renderer2 && this.renderer2.appendChild) {
-      this.renderer2.appendChild(this.document.head, s)
+      this.renderer2.appendChild(this.document.head, s);
     }
 
-    (<any>window).Intercom('update', conf)
+    (<any>window).Intercom("update", conf);
   }
 
-  loadIntercom(config: IntercomConfigObject, afterLoadCallback: (ev?: Event) => any): void {
+  loadIntercom(
+    config: IntercomConfigObject,
+    afterLoadCallback: (ev?: Event) => any,
+  ): void {
     if (!isPlatformBrowser(this.platformId)) {
-      return
+      return;
     }
 
-    this.id = config.appId
-    const w = <any>window
-    const ic = w.Intercom
+    this.id = config.appId;
+    const w = <any>window;
+    const ic = w.Intercom;
 
     // Set window config for Intercom
-    w.intercomSettings = config
+    w.intercomSettings = config;
 
-    if (typeof ic === 'function') {
-      ic('reattach_activator')
-      ic('update', config)
-      afterLoadCallback()
+    if (typeof ic === "function") {
+      ic("reattach_activator");
+      ic("update", config);
+      afterLoadCallback();
     } else {
       const i: any = function () {
-        i.c(arguments)
-      }
-      i.q = []
+        i.c(arguments);
+      };
+      i.q = [];
       i.c = function (args: any) {
-        i.q.push(args)
-      }
-      w.Intercom = i
-      this.injectIntercomScript(config, afterLoadCallback)
+        i.q.push(args);
+      };
+      w.Intercom = i;
+      this.injectIntercomScript(config, afterLoadCallback);
     }
-
   }
 }
