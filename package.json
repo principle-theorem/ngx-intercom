@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/supy-io/ngx-intercom#readme",
   "scripts": {
+    "preinstall": "npm run build:dist",
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "run-s build:client build:aot build:server",
