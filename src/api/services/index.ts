@@ -1,1 +1,0 @@
-export { DefaultService } from './DefaultService'

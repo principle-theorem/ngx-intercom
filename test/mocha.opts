@@ -1,8 +1,0 @@
---reporter spec
---recursive
---full-trace
---slow 50
---timeout 10000
---globals app,Zone,ng,__coverage__,__core-js_shared__,$$bole
-
-test/index.js test/api/**/*.test.js

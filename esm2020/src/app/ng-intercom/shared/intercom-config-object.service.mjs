@@ -1,0 +1,10 @@
+import { Injectable } from '@angular/core';
+import * as i0 from "@angular/core";
+export class IntercomConfigObject {
+}
+IntercomConfigObject.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: IntercomConfigObject, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+IntercomConfigObject.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: IntercomConfigObject });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: IntercomConfigObject, decorators: [{
+            type: Injectable
+        }] });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW50ZXJjb20tY29uZmlnLW9iamVjdC5zZXJ2aWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vc3JjL2FwcC9uZy1pbnRlcmNvbS9zaGFyZWQvaW50ZXJjb20tY29uZmlnLW9iamVjdC5zZXJ2aWNlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxVQUFVLEVBQUUsTUFBTSxlQUFlLENBQUE7O0FBRzFDLE1BQU0sT0FBTyxvQkFBb0I7O2tIQUFwQixvQkFBb0I7c0hBQXBCLG9CQUFvQjs0RkFBcEIsb0JBQW9CO2tCQURoQyxVQUFVIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSW5qZWN0YWJsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnXG5cbkBJbmplY3RhYmxlKClcbmV4cG9ydCBjbGFzcyBJbnRlcmNvbUNvbmZpZ09iamVjdCB7XG4gIC8qKlxuICAgKiBQYXNzIEFQUF9JRCB1c2luZyB0aGlzIGNvbmZpZyBvciB3aGVuIGNhbGwgYGJvb3QoKWAgbWV0aG9kXG4gICAqL1xuICBhcHBJZD86IHN0cmluZ1xuICAvKipcbiAgICogVXBkYXRlIEludGVyY29tIHBsdWdpbiBvbiBlYWNoIHJvdXRlIGNoYW5nZS5cbiAgICogRGVmYXVsdDogZmFsc2VcbiAgICovXG4gIHVwZGF0ZU9uUm91dGVyQ2hhbmdlPzogYm9vbGVhblxuICAvKipcbiAgICogQ3VzdG9taXplIGxlZnQgb3IgcmlnaHQgcG9zaXRpb24gb2YgbWVzc2VuZ2VyXG4gICAqL1xuICBhbGlnbm1lbnQ/OiAnbGVmdCcgfCAncmlnaHQnXG4gIC8qKlxuICAgKiBDdXN0b21pemUgaG9yaXpvbnRhbCBwYWRkaW5nXG4gICAqL1xuICBob3Jpem9udGFsX3BhZGRpbmc/OiBudW1iZXJcblxuICAvKipcbiAgICogQ3VzdG9taXplIHZlcnRpY2FsIHBhZGRpbmdcbiAgICovXG4gIHZlcnRpY2FsX3BhZGRpbmc/OiBudW1iZXJcblxuICAvKipcbiAgICogYXJiaXRyYXJpbHkgbG9jYWxpemUgeW91ciBpbnRlcmNvbSBtZXNzZW5nZXJcbiAgICovXG4gIGxhbmd1YWdlX292ZXJyaWRlPzogc3RyaW5nXG59XG4iXX0=
